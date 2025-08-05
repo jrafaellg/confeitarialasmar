@@ -19,15 +19,18 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Separator } from '@/components/ui/separator';
 import { doc, getDoc } from 'firebase/firestore';
+import { Loader2 } from 'lucide-react';
 
 export default function AdminLoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
   const router = useRouter();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsLoading(true);
 
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
@@ -39,25 +42,23 @@ export default function AdminLoginPage() {
 
       if (roleDocSnap.exists()) {
         const userRole = roleDocSnap.data().role;
-        toast({ title: "Login bem-sucedido!" });
         if (userRole === 'admin' || userRole === 'socialMedia') {
-          // Redireciona ambos para o dashboard principal.
+          toast({ title: "Login bem-sucedido!" });
           router.push('/admin/dashboard');
         } else {
-          // Default redirect if role is not recognized, or logout
-          toast({ title: "Acesso não permitido", description: "Você não tem permissão para acessar esta área.", variant: 'destructive'});
           auth.signOut();
+          toast({ title: "Acesso não permitido", description: "Você não tem permissão para acessar esta área.", variant: 'destructive'});
         }
       } else {
-        // No role found for this user
-        toast({ title: "Acesso negado", description: "Sua conta não tem um perfil de acesso definido.", variant: 'destructive'});
         auth.signOut();
+        toast({ title: "Acesso negado", description: "Sua conta não tem um perfil de acesso definido.", variant: 'destructive'});
       }
 
     } catch (error: any) {
-        let description = "Verifique seu e-mail e senha e tente novamente.";
-        if (error.code === 'auth/user-not-found' || error.code === 'auth/invalid-credential' || error.code === 'auth/wrong-password') {
-            description = "Credenciais inválidas. Verifique seu e-mail e senha.";
+        let description = "Ocorreu um erro desconhecido. Tente novamente.";
+        // Simplificando a verificação de erros de credenciais
+        if (error.code === 'auth/invalid-credential' || error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
+            description = "E-mail ou senha inválidos. Verifique e tente novamente.";
         }
         
         toast({
@@ -65,6 +66,10 @@ export default function AdminLoginPage() {
             description: description,
             variant: "destructive",
         });
+        // Limpa a senha para nova tentativa
+        setPassword('');
+    } finally {
+        setIsLoading(false);
     }
   };
 
@@ -95,6 +100,7 @@ export default function AdminLoginPage() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                disabled={isLoading}
               />
             </div>
             <div className="grid gap-2">
@@ -107,9 +113,11 @@ export default function AdminLoginPage() {
                 required 
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                disabled={isLoading}
               />
             </div>
-            <Button type="submit" className="w-full">
+            <Button type="submit" className="w-full" disabled={isLoading}>
+              {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               Entrar
             </Button>
           </form>
