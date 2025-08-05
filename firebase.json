@@ -1,0 +1,13 @@
+
+{
+  "hosting": {
+    "site": "confeitaria-lasmar",
+    "source": ".",
+    "frameworksBackend": {
+      "region": "us-central1"
+    }
+  },
+  "firestore": {
+    "rules": "firestore.rules"
+  }
+}

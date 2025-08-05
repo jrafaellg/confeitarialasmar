@@ -1,0 +1,32 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+  
+    // Regra geral: bloqueia todo o acesso por padrão.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Permite que qualquer pessoa leia produtos e categorias (loja pública).
+    match /products/{productId} {
+      allow read: if true;
+    }
+    match /categories/{categoryId} {
+      allow read: if true;
+    }
+     match /siteConfig/{configId} {
+      allow read: if true;
+    }
+
+    // Permite que um usuário logado leia seu próprio perfil de acesso.
+    // Isso é crucial para o sistema de login do painel de controle.
+    match /userRoles/{userId} {
+      allow read: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // As operações de escrita (create, update, delete) para produtos, 
+    // categorias e pedidos são gerenciadas pelo back-end usando o Admin SDK,
+    // que ignora estas regras. Portanto, não precisamos definir regras de escrita aqui.
+    // O acesso ao painel de controle é protegido pela lógica da aplicação (useRequireAuth).
+  }
+}

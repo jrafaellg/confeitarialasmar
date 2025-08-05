@@ -1,0 +1,30 @@
+
+# Dependências
+/node_modules
+
+# Build cache e output do Next.js
+/.next/
+/out/
+
+# Arquivos de ambiente local (segredos)
+.env.local
+.env.production
+serviceAccountKey.json
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Ignora a pasta de módulos do Node.
+node_modules/
+
+# Ignora a pasta de cache do Firebase.
+.firebase/
+
+# Ignora a pasta de build (se existir).
+dist/
+build/
+
+# Outros arquivos de ambiente.
+.env
