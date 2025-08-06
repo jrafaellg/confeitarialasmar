@@ -69,6 +69,7 @@ export default function Home() {
             fill
             className="absolute z-0 object-cover"
             priority
+            data-ai-hint="cake banner"
           />
           <div className="relative z-10 p-4 bg-black bg-opacity-50 rounded-lg">
             <h1 className="text-4xl md:text-6xl font-bold font-headline drop-shadow-lg">Confeitaria Lasmar</h1>
