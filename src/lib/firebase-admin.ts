@@ -1,7 +1,7 @@
 // src/lib/firebase-admin.ts
 import admin from 'firebase-admin';
 import type { App } from 'firebase-admin/app';
-import serviceAccount from '../../../confeitaria-lasmar.json';
+import serviceAccount from '../../confeitaria-lasmar.json';
 
 // Define a estrutura para armazenar as instâncias dos serviços inicializados.
 interface FirebaseAdminServices {
