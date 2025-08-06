@@ -4,8 +4,8 @@ import { getAuth } from 'firebase/auth';
 import { getFirestore, Timestamp } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
 
-// As configurações do Firebase para o lado do cliente (navegador)
-// devem ser carregadas a partir de variáveis de ambiente com o prefixo NEXT_PUBLIC_.
+// A configuração do Firebase para o lado do cliente (navegador)
+// é carregada a partir das variáveis de ambiente NEXT_PUBLIC_.
 const firebaseConfig: FirebaseOptions = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
   authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
