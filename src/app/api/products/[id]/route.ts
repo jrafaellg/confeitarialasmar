@@ -5,6 +5,7 @@
  */
 import { NextResponse } from 'next/server';
 import type { Product } from '@/lib/types';
+import { adminDb, adminStorage } from '@/lib/firebase-admin';
 
 // Força a rota a ser sempre dinâmica, evitando erros de build estático.
 export const dynamic = 'force-dynamic';
@@ -17,7 +18,6 @@ type RouteParams = {
 
 // Função auxiliar para excluir uma imagem do Firebase Storage pela sua URL.
 const deleteImageByUrl = async (imageUrl: string) => {
-  const { adminStorage } = await import('@/lib/firebase-admin');
   if (!imageUrl || !imageUrl.startsWith('https://firebasestorage.googleapis.com')) {
     console.warn(`URL de imagem inválida ou não é do Firebase, pulando exclusão: ${imageUrl}`);
     return;
@@ -47,7 +47,6 @@ const deleteImageByUrl = async (imageUrl: string) => {
  */
 export async function GET(request: Request, { params }: RouteParams) {
   try {
-    const { adminDb } = await import('@/lib/firebase-admin');
     const { id } = params;
     const productDoc = await adminDb.collection('products').doc(id).get();
 
@@ -66,7 +65,6 @@ export async function GET(request: Request, { params }: RouteParams) {
  */
 export async function PUT(request: Request, { params }: RouteParams) {
   try {
-    const { adminDb, adminStorage } = await import('@/lib/firebase-admin');
     const { id } = params;
     const formData = await request.formData();
     const productData: any = {};
@@ -131,7 +129,6 @@ export async function PUT(request: Request, { params }: RouteParams) {
  */
 export async function DELETE(request: Request, { params }: RouteParams) {
   try {
-    const { adminDb } = await import('@/lib/firebase-admin');
     const { id } = params;
     const docRef = adminDb.collection('products').doc(id);
     const docSnap = await docRef.get();

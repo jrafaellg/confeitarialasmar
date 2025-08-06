@@ -1,5 +1,7 @@
 // src/app/api/categories/route.ts
 import { NextResponse } from 'next/server';
+import { adminDb } from '@/lib/firebase-admin';
+import { FieldValue } from 'firebase-admin/firestore';
 
 // Força a rota a ser sempre dinâmica, evitando erros de build estático.
 export const dynamic = 'force-dynamic';
@@ -9,7 +11,6 @@ export const dynamic = 'force-dynamic';
  */
 export async function GET(request: Request) {
   try {
-    const { adminDb } = await import('@/lib/firebase-admin');
     const categoriesSnapshot = await adminDb.collection('categories').orderBy('name', 'asc').get();
     
     const categories = categoriesSnapshot.docs.map(doc => ({
@@ -29,8 +30,6 @@ export async function GET(request: Request) {
  */
 export async function POST(request: Request) {
   try {
-    const { adminDb } = await import('@/lib/firebase-admin');
-    const { FieldValue } = await import('firebase-admin/firestore');
     const { name, slug } = await request.json();
 
     if (!name || !slug) {

@@ -4,6 +4,7 @@
  * Ele lida com as operações GET (buscar), PUT (atualizar) e DELETE (excluir).
  */
 import { NextResponse } from 'next/server';
+import { adminDb } from '@/lib/firebase-admin';
 
 // Força a rota a ser sempre dinâmica, evitando erros de build estático.
 export const dynamic = 'force-dynamic';
@@ -20,7 +21,6 @@ type RouteParams = {
  */
 export async function GET(request: Request, { params }: RouteParams) {
   try {
-    const { adminDb } = await import('@/lib/firebase-admin');
     const { id } = params;
 
     if (!id) {
@@ -45,7 +45,6 @@ export async function GET(request: Request, { params }: RouteParams) {
  */
 export async function PUT(request: Request, { params }: RouteParams) {
   try {
-    const { adminDb } = await import('@/lib/firebase-admin');
     const { id } = params;
     const { name, slug } = await request.json(); // Extrai nome e slug do corpo da requisição.
 
@@ -69,7 +68,6 @@ export async function PUT(request: Request, { params }: RouteParams) {
  */
 export async function DELETE(request: Request, { params }: RouteParams) {
   try {
-    const { adminDb } = await import('@/lib/firebase-admin');
     const { id } = params;
 
     if (!id) {

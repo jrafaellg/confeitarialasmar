@@ -4,6 +4,8 @@
  * utilizando o Firebase Admin SDK para garantir acesso privilegiado.
  */
 import { NextResponse, NextRequest } from 'next/server';
+import { adminDb, adminStorage } from '@/lib/firebase-admin';
+import { FieldValue } from 'firebase-admin/firestore';
 
 // Força a rota a ser sempre dinâmica, evitando erros de build estático.
 export const dynamic = 'force-dynamic';
@@ -13,7 +15,6 @@ export const dynamic = 'force-dynamic';
  */
 export async function GET(request: NextRequest) {
   try {
-    const { adminDb } = await import('@/lib/firebase-admin');
     const { searchParams } = new URL(request.url);
     const slug = searchParams.get('slug');
     const categorySlug = searchParams.get('categorySlug');
@@ -45,8 +46,6 @@ export async function GET(request: NextRequest) {
  */
 export async function POST(request: Request) {
   try {
-    const { adminDb, adminStorage } = await import('@/lib/firebase-admin');
-    const { FieldValue } = await import('firebase-admin/firestore');
     const formData = await request.formData();
     const productData: any = {};
     const imageFiles: File[] = [];

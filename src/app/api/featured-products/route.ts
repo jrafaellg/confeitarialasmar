@@ -1,5 +1,6 @@
 // src/app/api/featured-products/route.ts
 import { NextResponse } from 'next/server';
+import { adminDb } from '@/lib/firebase-admin';
 
 // Força a rota a ser sempre dinâmica, evitando erros de build estático.
 export const dynamic = 'force-dynamic';
@@ -9,8 +10,6 @@ export const dynamic = 'force-dynamic';
  */
 export async function GET(request: Request) {
   try {
-    const { adminDb } = await import('@/lib/firebase-admin');
-
     const q = adminDb.collection('products').where('featured', '==', true);
     const featuredProductsSnapshot = await q.get();
     

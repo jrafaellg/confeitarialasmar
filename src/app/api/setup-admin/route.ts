@@ -6,6 +6,7 @@
  * seria feita através de um painel de gerenciamento de usuários.
  */
 import { NextResponse } from 'next/server';
+import { adminAuth, adminDb } from '@/lib/firebase-admin';
 
 // Força a rota a ser sempre dinâmica, evitando erros de build estático.
 export const dynamic = 'force-dynamic';
@@ -17,7 +18,6 @@ const SOCIAL_MEDIA_EMAIL = 'socialmedia@confeitaria.com';
 
 // Função auxiliar para configurar um perfil de usuário.
 async function setUserRole(email: string, role: 'admin' | 'socialMedia'): Promise<string> {
-  const { adminAuth, adminDb } = await import('@/lib/firebase-admin');
   try {
     const userRecord = await adminAuth.getUserByEmail(email);
     const { uid } = userRecord;

@@ -1,5 +1,6 @@
 // src/app/api/orders/[id]/route.ts
 import { NextResponse } from 'next/server';
+import { adminDb } from '@/lib/firebase-admin';
 
 // Força a rota a ser sempre dinâmica, evitando erros de build estático.
 export const dynamic = 'force-dynamic';
@@ -15,7 +16,6 @@ type RouteParams = {
  */
 export async function GET(request: Request, { params }: RouteParams) {
   try {
-    const { adminDb } = await import('@/lib/firebase-admin');
     const { id } = params;
     const docSnap = await adminDb.collection('orders').doc(id).get();
 
@@ -38,7 +38,6 @@ export async function GET(request: Request, { params }: RouteParams) {
  */
 export async function DELETE(request: Request, { params }: RouteParams) {
   try {
-    const { adminDb } = await import('@/lib/firebase-admin');
     const { id } = params;
     await adminDb.collection('orders').doc(id).delete();
     return NextResponse.json({ message: 'Pedido excluído com sucesso' }, { status: 200 });

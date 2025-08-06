@@ -1,6 +1,8 @@
 // src/app/api/pending-changes/route.ts
 import { NextResponse } from 'next/server';
 import type { PendingChange } from '@/lib/types';
+import { adminDb } from '@/lib/firebase-admin';
+import { FieldValue } from 'firebase-admin/firestore';
 
 // Força a rota a ser sempre dinâmica, evitando erros de build estático.
 export const dynamic = 'force-dynamic';
@@ -10,7 +12,6 @@ export const dynamic = 'force-dynamic';
  */
 export async function GET() {
   try {
-    const { adminDb } = await import('@/lib/firebase-admin');
     const snapshot = await adminDb.collection('pendingChanges').orderBy('submittedAt', 'desc').get();
     const changes = snapshot.docs.map(doc => {
         const data = doc.data();
@@ -32,8 +33,6 @@ export async function GET() {
  */
 export async function POST(request: Request) {
   try {
-    const { adminDb } = await import('@/lib/firebase-admin');
-    const { FieldValue } = await import('firebase-admin/firestore');
     const changeData: Omit<PendingChange, 'id' | 'status' | 'submittedAt'> = await request.json();
 
     if (!changeData.type || !changeData.data || !changeData.submittedBy) {

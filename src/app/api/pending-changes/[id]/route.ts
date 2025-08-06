@@ -1,6 +1,7 @@
 // src/app/api/pending-changes/[id]/route.ts
 import { NextResponse } from 'next/server';
 import type { PendingChange } from '@/lib/types';
+import { adminDb } from '@/lib/firebase-admin';
 
 // Força a rota a ser sempre dinâmica, evitando erros de build estático.
 export const dynamic = 'force-dynamic';
@@ -16,7 +17,6 @@ type RouteParams = {
  */
 export async function PUT(request: Request, { params }: RouteParams) {
   try {
-    const { adminDb } = await import('@/lib/firebase-admin');
     const { id } = params;
     const { status } = await request.json();
 

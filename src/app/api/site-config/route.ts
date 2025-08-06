@@ -1,6 +1,7 @@
 // src/app/api/site-config/route.ts
 import { NextResponse } from 'next/server';
 import type { SiteConfig } from '@/lib/types';
+import { adminDb } from '@/lib/firebase-admin';
 
 // Força a rota a ser sempre dinâmica, evitando erros de build estático.
 export const dynamic = 'force-dynamic';
@@ -11,7 +12,6 @@ export const dynamic = 'force-dynamic';
  */
 export async function GET() {
   try {
-    const { adminDb } = await import('@/lib/firebase-admin');
     const configDocRef = adminDb.collection('siteConfig').doc('main');
     const docSnap = await configDocRef.get();
     if (!docSnap.exists) {
@@ -30,7 +30,6 @@ export async function GET() {
  */
 export async function POST(request: Request) {
   try {
-    const { adminDb } = await import('@/lib/firebase-admin');
     const configDocRef = adminDb.collection('siteConfig').doc('main');
     const data: SiteConfig = await request.json();
     
