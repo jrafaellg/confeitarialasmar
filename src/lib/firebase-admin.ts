@@ -40,14 +40,14 @@ function getFirebaseAdmin(): FirebaseAdminServices {
     const serviceAccountCredentials = serviceAccount as admin.ServiceAccount;
 
     // Validação básica da chave de serviço para fornecer erros mais claros.
-    if (!serviceAccountCredentials.project_id || !serviceAccountCredentials.client_email || !serviceAccountCredentials.private_key) {
+    if (!serviceAccountCredentials.projectId || !serviceAccountCredentials.clientEmail || !serviceAccountCredentials.privateKey) {
       throw new Error('O JSON da chave de serviço do Firebase é inválido ou está incompleto.');
     }
 
     // Inicializa o app do Firebase Admin.
     const app = admin.initializeApp({
       credential: admin.credential.cert(serviceAccountCredentials),
-      storageBucket: `${serviceAccountCredentials.project_id}.appspot.com`,
+      storageBucket: `${serviceAccountCredentials.projectId}.appspot.com`,
     });
     
     // Armazena os serviços inicializados na variável de cache.
