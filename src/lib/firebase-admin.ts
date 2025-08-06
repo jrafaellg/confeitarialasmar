@@ -36,18 +36,16 @@ function getFirebaseAdmin(): FirebaseAdminServices {
   }
   
   try {
-    // A conta de serviço agora é importada diretamente do arquivo JSON.
+    // Passamos o objeto importado diretamente. A biblioteca do Firebase Admin
+    // é projetada para lidar com o formato 'snake_case' do arquivo JSON.
+    // Tentar converter para 'camelCase' manualmente pode causar erros se a estrutura
+    // do tipo não corresponder exatamente ao que a função `cert` espera.
     const serviceAccountCredentials = serviceAccount as admin.ServiceAccount;
-
-    // Validação básica da chave de serviço para fornecer erros mais claros.
-    if (!serviceAccountCredentials.projectId || !serviceAccountCredentials.clientEmail || !serviceAccountCredentials.privateKey) {
-      throw new Error('O JSON da chave de serviço do Firebase é inválido ou está incompleto.');
-    }
 
     // Inicializa o app do Firebase Admin.
     const app = admin.initializeApp({
       credential: admin.credential.cert(serviceAccountCredentials),
-      storageBucket: `${serviceAccountCredentials.projectId}.appspot.com`,
+      storageBucket: `${serviceAccountCredentials.project_id}.appspot.com`,
     });
     
     // Armazena os serviços inicializados na variável de cache.
