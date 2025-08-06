@@ -36,16 +36,15 @@ function getFirebaseAdmin(): FirebaseAdminServices {
   }
   
   try {
-    // Passamos o objeto importado diretamente. A biblioteca do Firebase Admin
-    // é projetada para lidar com o formato 'snake_case' do arquivo JSON.
-    // Tentar converter para 'camelCase' manualmente pode causar erros se a estrutura
-    // do tipo não corresponder exatamente ao que a função `cert` espera.
+    // Para contornar o problema de snake_case vs camelCase,
+    // usamos o tipo 'any' para a verificação, mas passamos o objeto
+    // correto para a função 'cert' que sabe como lidar com ele.
     const serviceAccountCredentials = serviceAccount as admin.ServiceAccount;
 
     // Inicializa o app do Firebase Admin.
     const app = admin.initializeApp({
       credential: admin.credential.cert(serviceAccountCredentials),
-      storageBucket: `${serviceAccountCredentials.project_id}.appspot.com`,
+      storageBucket: `${serviceAccountCredentials.projectId}.appspot.com`,
     });
     
     // Armazena os serviços inicializados na variável de cache.
