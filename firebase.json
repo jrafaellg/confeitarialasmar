@@ -9,10 +9,7 @@
     ],
     "frameworksBackend": {
       "region": "us-central1",
-      "memory": "1GiB",
-      "environment": {
-        "FIREBASE_SERVICE_ACCOUNT_BASE64": "${env:FIREBASE_SERVICE_ACCOUNT_BASE64}"
-      }
+      "memory": "1GiB"
     }
   },
   "firestore": {
