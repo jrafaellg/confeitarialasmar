@@ -1,4 +1,4 @@
-uunm run# Firebase Studio
+luunm run# Firebase Studio
 
 This is a NextJS starter in Firebase Studio.
 
